@@ -584,13 +584,13 @@ static split_to_D1_data (data) {
         var a_alpha_rad = []
         var a_surcharge = []
 
-        if (data.length !== undefined)  a_length = data.length.split(",");
-        if (data.breadth !== undefined)  a_breadth = data.breadth.split(",");
-        if (data.area !== undefined)  a_area = data.area.split(",");
-        if (data.cu !== undefined) a_cu = data.cu.split(",");
-        if (data.hload !== undefined) a_hload = data.hload.split(",");
-        if (data.alpha_rad !== undefined) a_alpha_rad = data.alpha_rad.split(",");
-        if (data.surcharge !== undefined) a_surcharge = data.surcharge.split(",");
+        if (data.length !== undefined)  a_length = data.length.toString().toString().split(",");
+        if (data.breadth !== undefined)  a_breadth = data.breadth.toString().toString().split(",");
+        if (data.area !== undefined)  a_area = data.area.toString().toString().split(",");
+        if (data.cu !== undefined) a_cu = data.cu.toString().toString().split(",");
+        if (data.hload !== undefined) a_hload = data.hload.toString().toString().split(",");
+        if (data.alpha_rad !== undefined) a_alpha_rad = data.alpha_rad.toString().toString().split(",");
+        if (data.surcharge !== undefined) a_surcharge = data.surcharge.toString().toString().split(",");
 
         var count = Math.max(a_length.length,a_breadth.length,a_area.length,
             a_cu.length,a_hload.length,a_alpha_rad.length, a_surcharge.length);
@@ -796,17 +796,17 @@ static split_to_D2_data (data) {
     var a_surcharge = []
 
 
-    if (data.length !== undefined)  a_length = data.length.split(",");
-    if (data.breadth !== undefined)  a_breadth = data.breadth.split(",");
-    if (data.area !== undefined)  a_area = data.area.split(",");
-    if (data.c !== undefined) a_c = data.c.split(",");
-    if (data.phi_rad !== undefined) a_phi_rad = data.phi_rad.split(",");
-    if (data.hload !== undefined) a_hload = data.hload.split(",");
-    if (data.vload !== undefined) a_vload = data.vload.split(",");
-    if (data.htheta_rad !== undefined) a_htheta_rad = data.htheta_rad.split(",");
-    if (data.alpha_rad !== undefined) a_alpha_rad = data.alpha_rad.split(",");
-    if (data.density !== undefined) a_density = data.density.split(",");
-    if (data.surcharge !== undefined) a_surcharge = data.surcharge.split(",");
+    if (data.length !== undefined)  a_length = data.length.toString().split(",");
+    if (data.breadth !== undefined)  a_breadth = data.breadth.toString().split(",");
+    if (data.area !== undefined)  a_area = data.area.toString().split(",");
+    if (data.c !== undefined) a_c = data.c.toString().split(",");
+    if (data.phi_rad !== undefined) a_phi_rad = data.phi_rad.toString().split(",");
+    if (data.hload !== undefined) a_hload = data.hload.toString().split(",");
+    if (data.vload !== undefined) a_vload = data.vload.toString().split(",");
+    if (data.htheta_rad !== undefined) a_htheta_rad = data.htheta_rad.toString().split(",");
+    if (data.alpha_rad !== undefined) a_alpha_rad = data.alpha_rad.toString().split(",");
+    if (data.density !== undefined) a_density = data.density.toString().split(",");
+    if (data.surcharge !== undefined) a_surcharge = data.surcharge.toString().split(",");
 
     var count = Math.max(a_length.length,a_breadth.length,a_area.length,
                          a_c.length,a_phi_rad.length,
