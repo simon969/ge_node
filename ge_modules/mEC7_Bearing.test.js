@@ -8,7 +8,7 @@ const mEC7Bearing = require('../ge_modules/mEC7_Bearing');
 //     expect(getAboutUsLink("en-US")).toBe("/about-us");
 // });
 
-const d2_data1 = {
+const d2_data1 = [{
                 length: 6,
                 breadth: 3,
                 hload:0,
@@ -16,7 +16,7 @@ const d2_data1 = {
                 alpha_rad:0,
                 cu:75
 
-}
+}]
 const d2_resp1 = {
                 length: 6,
                 breadth: 3,
@@ -32,5 +32,5 @@ const d2_resp1 = {
 }
 
 test("Check D2", () => {
-    expect(mEC7Bearing.calc_EC7_D2_data(d2_data1)).toBe(d2_resp1);
+    expect(mEC7Bearing.calc_EC7_D2_data(d2_data1).q_nc).toBe(d2_resp1.q_nc);
 });
