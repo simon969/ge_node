@@ -18,6 +18,9 @@
 // export default
 const constPI = 3.14159
 
+const { get } = require('express/lib/response');
+const LatexString = require('../ge_modules/shared/mLatexString');
+
 class cEC7_DrainedBearingResistanceD2 {
  
         constructor (data) {
@@ -29,25 +32,54 @@ class cEC7_DrainedBearingResistanceD2 {
 
             if (data != undefined || data != null) {
             
-                if (data.breadth != undefined) this.breadth = parseFloat(data.breadth)
-                if (data.length != undefined) this.length = parseFloat(data.length) 
-                if (data.area != undefined) this.area = parseFloat(data.area)
+                if (data.breadth != undefined) this.breadth = parseFloat(data.breadth);
+                if (data.length != undefined) this.length = parseFloat(data.length); 
+                if (data.area != undefined) this.area = parseFloat(data.area);
                 
-                if (data.hload != undefined) this.hload =parseFloat (data.hload)
-                if (data.vload != undefined) this.vload = parseFloat (data.vload) 
-                if (data.htheta_rad  != undefined) this.htheta_rad = parseFloat(data.htheta_rad)
-                if (data.alpha_rad  != undefined) this.alpha_rad = parseFloat(data.alpha_rad)
+                if (data.hload != undefined) this.hload = parseFloat (data.hload);
+                if (data.vload != undefined) this.vload = parseFloat (data.vload) ;
+                if (data.htheta_rad  != undefined) this.htheta_rad = parseFloat(data.htheta_rad);
+                if (data.alpha_rad  != undefined) this.alpha_rad = parseFloat(data.alpha_rad);
             
-                if (data.density  != undefined) this.density = parseFloat(data.density)
-                if (data.phi_rad  != undefined) this.phi_rad = parseFloat(data.phi_rad)
-                if (data.cohesion  != undefined) this.cohesion = parseFloat(data.cohesion)
-                if (data.surcharge  != undefined) this.surcharge = parseFloat(data.surcharge)
-            
+                if (data.density  != undefined) this.density = parseFloat(data.density);
+                if (data.phi_rad  != undefined) this.phi_rad = parseFloat(data.phi_rad);
+                if (data.cohesion  != undefined) this.cohesion = parseFloat(data.cohesion);
+                if (data.surcharge  != undefined) this.surcharge = parseFloat(data.surcharge);
+
+                if (data.references  != undefined) this.references = this._references();
+                if (data.limitations != undefined) this.limitations = this._limitations();
+                if (data.param_descriptions != undefined) this.param_descriptions = this._param_descriptions();
+                if (data.function_descriptions != undefined) this.function_descriptions =this. _function_descriptions();
+            } else {
+                this.init_empty();
             }
 
-            
         }
-        references () {
+
+        init_empty() {
+
+            this.breadth = null;
+            this.length = null; 
+            this.area = null;
+            this.hload = null;
+            this.vload = null;
+            this.htheta_rad = null;
+            this.alpha_rad = null;
+        
+            this.density = null;
+            this.phi_rad = null;
+            this.cohesion = null;
+            this.surcharge = null;
+            
+            this.references = this._references();
+            this.limitations = this._limitations();
+            this.param_descriptions = this._param_descriptions();
+            this.function_descriptions = this._function_descriptions();
+            this.latex = this._latex();
+        
+        }
+
+        _references () {
             var dict = {
                 id: 0,
                 reference:"" 
@@ -58,7 +90,7 @@ class cEC7_DrainedBearingResistanceD2 {
 
         }
         
-        limitations () {
+        _limitations () {
             var dict = {
                 id: 0,
                 reference:"" 
@@ -67,8 +99,50 @@ class cEC7_DrainedBearingResistanceD2 {
 
              return dict;
         }
+ 
+        _latex () {
+            var s  = new LatexString();
+            s.documentclass('article');
+            s.begin('document');
+                s.begin('table','h');
+                    s.begin ('center'); 
+                        s.caption('Your first table.');
+                        s.label('tab:table1');
+                        s.begin('tabular','l|c|r');
+                            s.add ('\\textbf{Value 1} & \\textbf{Value 2} & \\textbf{Value 3}\\\\');
+                            s.add ('$\\alpha$ & $\\beta$ & $\\gamma$ \\\\');
+                            s.add ('\\hline');
+                            s.add ('1 & 1110.1 & a\\\\');
+                            s.add ('2 & 10.1 & b\\\\');
+                            s.add ('3 & 23.113231 & c\\\\');
+                        s.end('tabular');
+                    s.end('center');
+                s.end ('table');
+            s.end('document');
+            return s.toString();
 
-        param_descriptions () {
+        //    \documentclass{article}
+        //    \begin{document}    
+        //     \begin{table}[h!]  
+        //       \begin{center}
+        //         \caption{Your first table.}
+        //         \label{tab:table1}
+        //         \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+        //           \textbf{Value 1} & \textbf{Value 2} & \textbf{Value 3}\\
+        //           $\alpha$ & $\beta$ & $\gamma$ \\
+        //           \hline
+        //           1 & 1110.1 & a\\
+        //           2 & 10.1 & b\\
+        //           3 & 23.113231 & c\\
+        //         \end{tabular}
+        //       \end{center}
+        //     \end{table}
+            
+        //     \end{document}' 
+            
+        }
+        
+        _param_descriptions () {
         
             var dict = {
                param:"",
@@ -94,7 +168,7 @@ class cEC7_DrainedBearingResistanceD2 {
             return dict;
         }
         
-        function_descriptions () {
+        _function_descriptions () {
             var dict = {
                 func:"",
                 description:"",
@@ -127,6 +201,8 @@ class cEC7_DrainedBearingResistanceD2 {
 
              return dict;
         }
+
+
             // // 'Input variables
             // /**
             // * @param {string} dNewValue
@@ -320,23 +396,47 @@ class cEC7_UndrainedBearingResistanceD1 {
  
         constructor (data) {
        
-        if (data != null) {
+            if (data != null) {
             
-            if (data.breadth != undefined) this.breadth = parseFloat(data.breadth)
-            if (data.length != undefined) this.length = parseFloat(data.length) 
-            if (data.area != undefined) this.area = parseFloat(data.area)
+                if (data.breadth != undefined) this.breadth = parseFloat(data.breadth)
+                if (data.length != undefined) this.length = parseFloat(data.length) 
+                if (data.area != undefined) this.area = parseFloat(data.area)
+                
+                if (data.hload != undefined) this.hload = parseFloat(data.hload);
+                if (data.alpha_rad != undefined) this.alpha_rad = parseFloat (data.alpha_rad);
+                
+                if (data.surcharge != undefined) this.surcharge = parseFloat (data.surcharge)
+                if (data.cu != undefined)  this.cu = parseFloat (data.cu)
+                
+                if (data.references  != undefined) this.references = this._references();
+                if (data.limitations != undefined) this.limitations = this._limitations();
+                if (data.param_descriptions != undefined) this.param_descriptions = this.param_descriptions();
+                if (data.function_descriptions != undefined) this.function_descriptions = this.function_descriptions();
             
-            if (data.hload != undefined) this.hload = parseFloat(data.hload);
-            if (data.alpha_rad != undefined) this.alpha_rad = parseFloat (data.alpha_rad);
+            } else {
+                this.init_empty();
+            }
+
+        }
+        
+        init_empty () {
             
-            if (data.surcharge != undefined) this.surcharge = parseFloat (data.surcharge)
-            if (data.cu != undefined)  this.cu = parseFloat (data.cu)
-           
+            this.breadth = null;
+            this.length = null; 
+            this.area = null;
+            this.hload = null;
+            this.alpha_rad = null;
+            this.surcharge = null;
+            this.cu = null;
+            this.references = this._references();
+            this.limitations = this._limitations();
+            this.param_descriptions = this._param_descriptions();
+            this.function_descriptions =this. _function_descriptions();
+            this.latex = this._latex();
+        
         }
 
-            
-    }
-        references () {
+        _references () {
             var dict = {
                 id: 0,
                 reference:"" 
@@ -347,7 +447,7 @@ class cEC7_UndrainedBearingResistanceD1 {
 
         }
         
-        limitations () {
+        _limitations () {
             var dict = {
                 id: 0,
                 reference:"" 
@@ -357,7 +457,7 @@ class cEC7_UndrainedBearingResistanceD1 {
              return dict;
         }
 
-        param_descriptions () {
+        _param_descriptions () {
         
             var dict = {
                param:"",
@@ -377,7 +477,7 @@ class cEC7_UndrainedBearingResistanceD1 {
             return dict;
         }
         
-        function_descriptions () {
+        _function_descriptions () {
             var dict = {
                 func:"",
                 description:"",
@@ -397,15 +497,57 @@ class cEC7_UndrainedBearingResistanceD1 {
                     
             return dict;
         }
-            // 'Input variables
-            set _cu (dNewValue) {this.cu = parseFloat(dNewValue);}
-            set _surcharge (dNewValue) {this.surcharge = parseFloat(dNewValue);}
-            set _density (dNewValue) {this.density = parseFloat(dNewValue);}
-            set _length (dNewValue) {this.length =  parseFloat(dNewValue);}
-            set _breadth (dNewValue) {this.breadth=  parseFloat(dNewValue);}
-            set _area (dNewValue) {this.area = parseFloat(dNewValue);}
-            set _hload (dNewValue) {this.hload =  parseFloat(dNewValue);}
-            set _alpha_rad (dNewValue) {this.alpha_rad = parseFloat(dNewValue);}
+
+        _latex () {
+            var s  = new LatexString();
+            s.documentclass('article');
+            s.begin('document');
+                s.begin('table','h');
+                    s.begin ('center'); 
+                        s.caption('Your first table.');
+                        s.label('tab:table1');
+                        s.begin('tabular','l|c|r');
+                            s.add ('\\textbf{Value 1} & \\textbf{Value 2} & \\textbf{Value 3}\\\\');
+                            s.add ('$\\alpha$ & $\\beta$ & $\\gamma$ \\\\');
+                            s.add ('\\hline');
+                            s.add ('1 & 1110.1 & a\\\\');
+                            s.add ('2 & 10.1 & b\\\\');
+                            s.add ('3 & 23.113231 & c\\\\');
+                        s.end('tabular');
+                    s.end('center');
+                s.end ('table');
+            s.end('document');
+            return s.toString();
+
+        //    \documentclass{article}
+        //    \begin{document}    
+        //     \begin{table}[h!]  
+        //       \begin{center}
+        //         \caption{Your first table.}
+        //         \label{tab:table1}
+        //         \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+        //           \textbf{Value 1} & \textbf{Value 2} & \textbf{Value 3}\\
+        //           $\alpha$ & $\beta$ & $\gamma$ \\
+        //           \hline
+        //           1 & 1110.1 & a\\
+        //           2 & 10.1 & b\\
+        //           3 & 23.113231 & c\\
+        //         \end{tabular}
+        //       \end{center}
+        //     \end{table}
+            
+        //     \end{document}' 
+            
+        }
+        // 'Input variables
+        set _cu (dNewValue) {this.cu = parseFloat(dNewValue);}
+        set _surcharge (dNewValue) {this.surcharge = parseFloat(dNewValue);}
+        set _density (dNewValue) {this.density = parseFloat(dNewValue);}
+        set _length (dNewValue) {this.length =  parseFloat(dNewValue);}
+        set _breadth (dNewValue) {this.breadth=  parseFloat(dNewValue);}
+        set _area (dNewValue) {this.area = parseFloat(dNewValue);}
+        set _hload (dNewValue) {this.hload =  parseFloat(dNewValue);}
+        set _alpha_rad (dNewValue) {this.alpha_rad = parseFloat(dNewValue);}
             
             // // ' Output Variables
             // get sc() {return this.Sc;}
@@ -526,6 +668,13 @@ static init_functions (name  = "Geotech EC7 Bearing Resistance") {
 
 }
 
+static calc_EC7 (data) {
+    var result = [];
+    result.push(this.calc_EC7_D1(data))
+    result.push(this.calc_EC7_D2(data))
+    return result;
+}
+
 static calc_EC7_D1_nc() {
         
         // Attribute calc_EC7_D1_nc.VB_Description = "calculate nc factor for EC7 Eq D1"
@@ -562,8 +711,7 @@ static calc_EC7_D1_ic_data (data) {
         }
             
         return result;
-       
-
+ 
 }
 
 // /**
@@ -1253,7 +1401,8 @@ static calc_EC7_D2_data (data, funct = 'calc_D2') {
         if (funct=='calc_D2_sg') ec7.calc_D2_sg();
         if (funct=='calc_D2_bg') ec7.calc_D2_bg();
         if (funct=='calc_D2_qng') ec7.calc_D2_qng();
-
+        
+        ec7.report_results(); 
         a_res.push (ec7);
     } 
     

@@ -35,6 +35,6 @@ test ("Empty Check",() => {
     expect (1.00).toBe(1.00)
 });
 
-// test("Check D2", () => {
-//     expect(mEC7Bearing.calc_EC7_D2_data(d2_data1).q_nc).toBe(d2_resp1.q_nc);
-// });
+test("Check D2", () => {
+    expect(mEC7Bearing.calc_EC7_D2_data(d2_data1).q_nc).toBe(d2_resp1.q_nc);
+});
