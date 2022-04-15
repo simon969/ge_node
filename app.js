@@ -11,8 +11,8 @@ var cors = require('cors')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var apiRouter = require('./routes/ge_modules');
-
+var ge_modulesRouter = require('./routes/ge_modules');
+var ge_pdfRouter =  require ('./routes/ge_pdf')
 var app = express();
 
 var swaggerUi = require('swagger-ui-express');
@@ -31,8 +31,8 @@ app.use (cors());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api', apiRouter);
-
+app.use('/api', ge_modulesRouter);
+app.use('/api', ge_pdfRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // catch 404 and forward to error handler

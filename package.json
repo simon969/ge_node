@@ -11,11 +11,13 @@
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "formidable": "^2.0.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "node-latex": "^3.1.0",
     "pug": "2.0.0-beta11",
-    "swagger-ui-express": "^4.3.0"
+    "sqlite3": "^5.0.2",
+    "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2"
   },
   "main": "app.js",
   "devDependencies": {

@@ -19,7 +19,7 @@
 const constPI = 3.14159
 
 const { get } = require('express/lib/response');
-const LatexString = require('../ge_modules/shared/mLatexString');
+const LatexString = require('../ge_modules/mLatexPDF');
 
 class cEC7_DrainedBearingResistanceD2 {
  
