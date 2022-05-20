@@ -8,6 +8,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
+var bodyParser = require('body-parser')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,16 +16,22 @@ var ge_modulesRouter = require('./routes/ge_modules');
 var ge_pdfRouter =  require ('./routes/ge_pdf')
 var app = express();
 
-var swaggerUi = require('swagger-ui-express');
-var swaggerDocument = require('./swagger.json');
+var swaggerUi = require('swagger-ui-express'), 
+  swaggerDocument = require('./swagger.json');
+
+  //  http://expressjs.com/en/resources/middleware/body-parser.html
+// parse application/x-www-form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use (cors());

@@ -16,9 +16,345 @@
     {
       "name": "EC7_Bearing",
       "description": "API for Bearing Resistance Calculations"
+    },
+    {
+      "name": "Tasks",
+      "description": "API for convert latex formated text to PDF"
+    },
+    {
+      "name": "Users",
+      "description": "API for users in the system"
     }
   ],
   "schemes": ["http"],
   "consumes": ["application/json"],
-  "produces": ["application/json"]
+  "produces": ["application/json"],
+  "paths": {
+    "/api/EC7_Bearing/calc_EC7_D1": {
+      "get": {
+        "tags": ["EC7_Bearing"],
+        "summary": "Calculate undrained bearing resistance in accordance with EC7 formulae D1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EC7_D1"
+            }
+          }
+        }
+      }
+    },
+    "/api/EC7_Bearing/calc_EC7_D1/param/{param}": {
+      "get": {
+        "tags": ["EC7_Bearing"],
+        "summary": "Calculate parameter of drained bearing resistance EC7 formula D2",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "param",
+            "type": "string",
+            "required": "true",
+            "description": "parameters of formula D2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EC7_D2"
+            }
+          }
+        }
+      }
+    },
+    "/api/EC7_Bearing/calc_EC7_D2": {
+      "get": {
+        "tags": ["EC7_Bearing"],
+        "summary": "Calculate drained bearing resistance in accordance with EC7 formula D2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EC7_D2"
+            }
+          }
+        }
+      }
+    },
+    "/api/EC7_Bearing/calc_EC7_D2/param/{param}": {
+      "get": {
+        "tags": ["EC7_Bearing"],
+        "summary": "Calculate parameter of drained bearing resistance EC7 formula D2",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "param",
+            "type": "string",
+            "required": "true",
+            "description": "parameters of formula D2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/EC7_D2"
+            }
+          }
+        }
+      }
+    },
+      "/api/users": {
+        "get": {
+          "tags": ["Users"],
+          "summary": "Get all users in system",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/Users"
+              }
+            }
+          }
+        }
+      },
+      "/api/ge_task": {
+        "get": {
+          "tags": ["Tasks"],
+          "summary": "Get all ge_tasks in system",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/Tasks"
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": ["Tasks"],
+          "description": "Create new task in system",
+          "parameters": [
+            {
+              "owner": "owner",
+              "latex": "latex",
+              "in": "body",
+              "description": "Latex that we want to convert to a PDF",
+              "schema": {
+                "$ref": "#/definitions/Task"
+              }
+            }
+          ],
+          "produces": ["application/json"],
+          "responses": {
+            "201": {
+              "description": "New task is created",
+              "schema": {
+                "$ref": "#/definitions/Task"
+              }
+            }
+          }
+        }
+      },
+      "/api/ge_task/{Id}/download/{filename}": {
+        "get": {
+          "tags": ["Tasks"],
+          "summary": "download file from ge_task",
+          "parameters":[
+            {
+              "in": "path",
+              "name": "Id",
+              "type": "string",
+              "format":"uuid",
+              "required": "true",
+              "description": "unique Id of the ge_task."
+            },
+            {
+              "in": "path",
+              "name": "filename",
+              "type": "string",
+              "required": "true",
+              "description": "name of file to download"
+            }
+          ]
+        }
+     },
+     "/api/ge_task/{Id}": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Gets a ge_task by ID.",
+        "parameters":[
+          {
+          "in": "path",
+          "name": "Id",
+          "type": "string",
+          "required": "true",
+          "description": "Numeric ID of the user to get."
+          }
+        ]
+      }
+    }
+  },
+    "definitions": {
+      "User": {
+        "required": ["name", "_id", "companies"],
+        "properties": {
+          "_id": {
+            "type": "integer",
+            "uniqueItems": true
+          },
+          "isPublic": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "companies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EC7_D1": {
+        "required": ["length", "breadth", "area", "cu", "hload", "alpha_rad", "surcharge"],
+        "description": "Calculate undrained bearing resistance using EC7 Equation D1",
+        "properties": {
+          "length": {
+            "type": "number",
+            "description":"length of foundation"
+          },
+          "breadth": {
+            "type": "number",
+            "description":"breadth of foundation"
+          },
+          "area": {
+            "type": "number",
+            "description":"base area of foundation"
+          },
+          "cu": {
+            "type": "number",
+            "description":"undrained shear strength"
+          },
+          "hload": {
+            "type": "number",
+            "description":"horizontal load"
+          },
+          "alpha_rad": {
+            "type":"number",
+            "description":"inclination of base of foundation"
+          },
+          "surcharge":{
+            "type":"number",
+            "description":"surcharge at base of foundation"
+          }
+          }
+        },
+        "EC7_D2": {
+          "required": ["length", "breadth", "area", 
+                       "c", "phi_rad", 
+                       "htheta_rad", "vload", "hload", 
+                       "alpha_rad",  "density", "surcharge"],
+          "description": "Calculate drained bearing resistance using EC7 Equation D2",
+          "properties": {
+            "length": {
+              "type": "number",
+              "description":"length of foundation"
+            },
+            "breadth": {
+              "type": "number",
+              "description":"breadth of foundation"
+            },
+            "area": {
+              "type": "number",
+              "description":"base area of foundation"
+            },
+            "c": {
+              "type": "number",
+              "description":"drained shear strength"
+            },
+            "phi_rad": {
+              "type": "number",
+              "description":"friction angle (radians)"
+            },
+            "hload": {
+              "type": "number",
+              "description":"horizontal load"
+            },
+            "vload": {
+              "type": "number",
+              "description":"vertical load"
+            },
+            "htheta_rad": {
+              "type": "number",
+              "description":"angle of horizontal load (radians)"
+            },
+            "alpha_rad": {
+              "type":"number",
+              "description":"inclination of base of foundation"
+            },
+            "density":{
+              "type":"number",
+              "description":"effective density of bearing strata"
+            },
+            "surcharge":{
+              "type":"number",
+              "description":"surcharge at base of foundation"
+            }
+            }
+          },
+      "Task": {
+        "required": ["Id", "owner","createdDT_int", "folder","files", "latex", "options"],
+        "description": "Convert latex string to PDF format",
+         "properties": {
+          "Id": {
+            "type": "string",
+            "uniqueItems": true,
+            "format": "uuid"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "createdDT_int": {
+            "type": "number"
+          },
+          "folder": {
+            "type": "string"
+          },
+          "files": {
+            "type": "string"
+          },
+          "latex": {
+            "type":"string"
+          },
+          "options":{
+            "type":"string"
+          }
+          }
+        },      
+      "Users": {
+        "type": "array",
+        "$ref": "#/definitions/User"
+      },
+      "Tasks": {
+        "type": "array",
+        "$ref": "#/definitions/Task"
+      }
+
+  }
 }

@@ -21,6 +21,15 @@ const constPI = 3.14159
 const { get } = require('express/lib/response');
 const LatexString = require('../ge_modules/mLatexPDF');
 
+function isNullOrEmpty(obj) {
+    
+    if (obj == undefined || obj == null) {
+        return false;
+    }
+
+    return Object.keys(obj).length === 0;
+}
+
 class cEC7_DrainedBearingResistanceD2 {
  
         constructor (data) {
@@ -30,8 +39,7 @@ class cEC7_DrainedBearingResistanceD2 {
             // this.vload = 0;
             // this.alpha_rad = 0;
 
-            if (data != undefined || data != null) {
-            
+            if (!isNullOrEmpty(data)) {
                 if (data.breadth != undefined) this.breadth = parseFloat(data.breadth);
                 if (data.length != undefined) this.length = parseFloat(data.length); 
                 if (data.area != undefined) this.area = parseFloat(data.area);
@@ -50,6 +58,14 @@ class cEC7_DrainedBearingResistanceD2 {
                 if (data.limitations != undefined) this.limitations = this._limitations();
                 if (data.param_descriptions != undefined) this.param_descriptions = this._param_descriptions();
                 if (data.function_descriptions != undefined) this.function_descriptions =this. _function_descriptions();
+                
+                if (data.options != undefined) {
+                    if ('param_descriptions' in data.options) this.param_descriptions = this._param_descriptions();
+                    if ('function_descriptions' in data.options) this.param_descriptions = this._function_descriptions();
+                    if ('references' in data.options) this.references = this._references();
+                    if ('limitations' in data.options) this.limitations = this._limitations();
+                }
+
             } else {
                 this.init_empty();
             }
@@ -101,20 +117,44 @@ class cEC7_DrainedBearingResistanceD2 {
         }
  
         _latex () {
-            var s  = new LatexString();
+            var s  = new LatexString.LatexString();
             s.documentclass('article');
-            s.begin('document');
+            s.begin('document' );
                 s.begin('table','h');
                     s.begin ('center'); 
-                        s.caption('Your first table.');
+                        s.caption('Drained Bearing Resistance (BS EN 1997 Eq D2');
                         s.label('tab:table1');
                         s.begin('tabular','l|c|r');
-                            s.add ('\\textbf{Value 1} & \\textbf{Value 2} & \\textbf{Value 3}\\\\');
-                            s.add ('$\\alpha$ & $\\beta$ & $\\gamma$ \\\\');
-                            s.add ('\\hline');
-                            s.add ('1 & 1110.1 & a\\\\');
-                            s.add ('2 & 10.1 & b\\\\');
-                            s.add ('3 & 23.113231 & c\\\\');
+                            s.add ('\\textbf{Parameter} & \\textbf{Value} \\');
+                            s.add ('length &' + this.length + '\\');
+                            s.add ('breadth &' + this.breadth + '\\');
+                            s.add ('area &' + this.area + '\\');
+                           
+                            s.add ('phi &' + this.phi_rad + '\\');
+                            s.add ('cohesion &' + this.cohesion + '\\');
+                            
+                            s.add ('Nc & ' + this.nc + '\\');
+                            s.add ('sc & ' + this.sc + '\\');
+                            s.add ('ic & ' + this.ic+ '\\');
+                            s.add ('bc & ' + this.bc + '\\');
+                            s.add ('q_nc & ' + this.q_nc + '\\');
+                            
+                            s.add ('surcharge &' + this.surcharge + '\\');
+                            s.add ('Nq & ' + this.nq + '\\');
+                            s.add ('sq & ' + this.sq + '\\');
+                            s.add ('iq & ' + this.iq+ '\\');
+                            s.add ('bq & ' + this.bq + '\\');
+                            s.add ('q_nq & ' + this.q_nq + '\\');
+
+                            s.add ('density &' + this.density + '\\');
+                            s.add ('Ng & ' + this.ng + '\\');
+                            s.add ('sg & ' + this.sg + '\\');
+                            s.add ('ig & ' + this.ig+ '\\');
+                            s.add ('bg & ' + this.bg + '\\');
+                            s.add ('q_ng & ' + this.q_ng + '\\');
+
+                            s.add ('q_ult & ' + this.q_ult + '\\');
+
                         s.end('tabular');
                     s.end('center');
                 s.end ('table');
@@ -396,7 +436,7 @@ class cEC7_UndrainedBearingResistanceD1 {
  
         constructor (data) {
        
-            if (data != null) {
+            if (!isNullOrEmpty(data)) {
             
                 if (data.breadth != undefined) this.breadth = parseFloat(data.breadth)
                 if (data.length != undefined) this.length = parseFloat(data.length) 
@@ -412,6 +452,14 @@ class cEC7_UndrainedBearingResistanceD1 {
                 if (data.limitations != undefined) this.limitations = this._limitations();
                 if (data.param_descriptions != undefined) this.param_descriptions = this.param_descriptions();
                 if (data.function_descriptions != undefined) this.function_descriptions = this.function_descriptions();
+                
+                if (data.options != undefined) {
+                    if ('param_descriptions' in data.options) this.param_descriptions = this._param_descriptions();
+                    if ('function_descriptions' in data.options) this.param_descriptions = this._function_descriptions();
+                    if ('references' in data.options) this.references = this._references();
+                    if ('limitations' in data.options) this.limitations = this._limitations();
+                }
+
             
             } else {
                 this.init_empty();
@@ -499,20 +547,36 @@ class cEC7_UndrainedBearingResistanceD1 {
         }
 
         _latex () {
-            var s  = new LatexString();
+
+                
+
+
+            var s  = new LatexString.LatexString();
             s.documentclass('article');
             s.begin('document');
-                s.begin('table','h');
+                s.begin('table');
+                    s.cr();
                     s.begin ('center'); 
-                        s.caption('Your first table.');
+                        s.caption('Undrained Bearing Resistance (BS EN 1997 Eq D1');
                         s.label('tab:table1');
-                        s.begin('tabular','l|c|r');
-                            s.add ('\\textbf{Value 1} & \\textbf{Value 2} & \\textbf{Value 3}\\\\');
-                            s.add ('$\\alpha$ & $\\beta$ & $\\gamma$ \\\\');
-                            s.add ('\\hline');
-                            s.add ('1 & 1110.1 & a\\\\');
-                            s.add ('2 & 10.1 & b\\\\');
-                            s.add ('3 & 23.113231 & c\\\\');
+                        s.begin('tabular');
+                            s.brace('l|c|r');
+                                s.cr();
+                                s.al ('\\textbf{Parameter} & \\textbf{Value} & \\textbf{Description} \\\\');
+                                s.al (`length (m) & ${this.length} & Length of foundation \\\\`);
+                                s.al (`breadth (m) & ${this.breadth} & Breadth of foundation \\\\`);
+                                s.al (`area (m\\textsuperscript{2}) & ${this.area} &  Effective bearing area \\\\`);
+                            
+                                s.al (`cohesion (kPa) & ${this.cu} & Undrained shear strength \\\\`);
+                                
+                                s.al (`N\\textsubscript{c} & ${this.nc} & Bearing capacity factor \\\\`);
+                                s.al (`s\\textsubscript{c} & ${this.sc} & Shape factor \\\\`);
+                                s.al (`i\\textsubscript{c} & ${this.ic} & Load inclination factor \\\\`);
+                                s.al (`b\\textsubscript{c} & ${this.bc} & Base inclination factor \\\\`);
+                                s.al (`q\\textsubscript{nc} (kPa) & ${this.q_nc} & Total undrained bearing resistance \\\\`);
+                                
+                                s.al (`surcharge (kPa) & ${this.surcharge} & Surcharge adjacent to foundation \\\\`);
+                                s.al (`qult (kPa) & ${this.q_ult} & Total ultimate bearing resistance \\\\`);
                         s.end('tabular');
                     s.end('center');
                 s.end ('table');
@@ -576,7 +640,7 @@ class cEC7_UndrainedBearingResistanceD1 {
     
     calc_D1()   {
         this.calc_D1_qnc();
-        this.q_ult = this.q_nc + this.surcharge;
+        this.q_ult= this.q_nc + this.surcharge;
         return this.q_ult;
     }
     
@@ -669,6 +733,7 @@ static init_functions (name  = "Geotech EC7 Bearing Resistance") {
 }
 
 static calc_EC7 (data) {
+
     var result = [];
     result.push(this.calc_EC7_D1(data))
     result.push(this.calc_EC7_D2(data))
@@ -739,7 +804,7 @@ static split_to_D1_data (data) {
         if (data.hload !== undefined) a_hload = data.hload.toString().toString().split(",");
         if (data.alpha_rad !== undefined) a_alpha_rad = data.alpha_rad.toString().toString().split(",");
         if (data.surcharge !== undefined) a_surcharge = data.surcharge.toString().toString().split(",");
-
+       
         var count = Math.max(a_length.length,a_breadth.length,a_area.length,
             a_cu.length,a_hload.length,a_alpha_rad.length, a_surcharge.length);
         
@@ -752,6 +817,7 @@ static split_to_D1_data (data) {
             if (a_hload.length>0)  { if (a_hload.length==1) {obj.hload = a_hload[0]} else {obj.hload = a_hload[i]}}
             if (a_alpha_rad.length>0)  { if (a_alpha_rad.length==1) {obj.alpha_rad = a_alpha_rad[0]} else {obj.alpha_rad = a_alpha_rad[i]}}
             if (a_surcharge.length>0)  { if (a_surcharge.length==1) {obj.surcharge = a_surcharge[0]} else {obj.surcharge = a_surcharge[i]}}
+         
             res.push(obj)
         }
 
@@ -826,37 +892,53 @@ static calc_EC7_D1_bc(alpha_rad) {
 //     }
 // }
 
-static calc_EC7_D1_data (data, funct = 'calc_D1') { 
+static calc_EC7_D1_data (data, funct = 'q_ult', callback) { 
     
     var a_res = []
     var a_data = []
 
-    if (Array.isArray(data)) {
-        // its already an array
-       a_data = data;
-    } else {
-        // try spliting the data
-        var test = this.split_to_D1_data(data)
-        if (test.length > 0) {
-            a_data = test;
+    try {
+        if (Array.isArray(data)) {
+            // its already an array
+        a_data = data;
         } else {
-            // try assigning as single data;
-            a_data[0] = data;
+            // try spliting the data
+            var test = this.split_to_D1_data(data)
+            if (test.length > 0) {
+                a_data = test;
+            } else {
+                // try assigning as single data;
+                a_data[0] = data;
+            }
+        }
+        
+        for (var i = 0; i < a_data.length; i++) {
+                var ec7 = new cEC7_UndrainedBearingResistanceD1(a_data[i]);
+                if (funct=='q_ult') ec7.calc_D1();
+                if (funct=='ic') ec7.calc_D1_ic();
+                if (funct=='sc') ec7.calc_D1_sc();
+                if (funct=='bc') ec7.calc_D1_bc();
+                if (funct=='q_nc') ec7.calc_D1_qnc();
+                if (funct=='nc') ec7.calc_D1_nc();
+                if (data.latex != undefined) {
+                    ec7.latex = ec7._latex();
+                }
+                a_res.push (ec7);
+        }
+        
+        if (callback) {
+                callback (null, a_res)
+        } else {
+            return a_res
+        }
+
+    } catch (err) {
+        if (callback) {
+                callback (err, a_res)
+        } else {
+            return err;
         }
     }
-
-    for(var i = 0; i < a_data.length; i++) {
-            var ec7 = new cEC7_UndrainedBearingResistanceD1(a_data[i]);
-            if (funct=='calc_D1') ec7.calc_D1();
-            if (funct=='calc_D1_ic') ec7.calc_D1_ic();
-            if (funct=='calc_D1_sc') ec7.calc_D1_sc();
-            if (funct=='calc_D1_bc') ec7.calc_D1_bc();
-            if (funct=='calc_D1_qnc') ec7.calc_D1_qnc();
-            if (funct=='calc_D1_nc') ec7.calc_D1_nc();
-            a_res.push (ec7);
-    } 
-    
-    return a_res;
 
 }
 /**
@@ -871,7 +953,7 @@ static calc_EC7_D1_data (data, funct = 'calc_D1') {
  * @param {string} [resp] - 'value'
  * @returns {}
  */
-static calc_EC7_D1 (breadth, length, area, cu, surcharge, hload, alpha_rad, resp) {
+static calc_EC7_D1 (breadth, length, area, cu, surcharge, hload, alpha_rad, options) {
 
         // Attribute calc_EC7_D1.VB_Description = "calculate design undrained bearing resistance for EC7 Eq D1"
         // Attribute calc_EC7_D1.VB_ProcData.VB_Invoke_Func = " \n21"
@@ -888,7 +970,11 @@ static calc_EC7_D1 (breadth, length, area, cu, surcharge, hload, alpha_rad, resp
         ec7.hload = hload
         ec7.alpha_rad = alpha_rad
         
-        if (resp == 'value') {
+        if ('latex' in options) {
+            ec7.latex = ec7._latex();
+        }
+
+        if ('value' in options) {
             return ec7.calc_D1();
         }
         
@@ -1358,7 +1444,7 @@ static calc_EC7_D2_qng(breadth, length, area, cohesion, phi_rad, density, hload,
         return ec7.calc_D2_qng();
 
 }
-static calc_EC7_D2_data (data, funct = 'calc_D2') { 
+static calc_EC7_D2_data (data, funct = 'q_ult') { 
     
     var a_res = []
     var a_data = []
@@ -1382,27 +1468,26 @@ static calc_EC7_D2_data (data, funct = 'calc_D2') {
             
         var ec7 = new cEC7_DrainedBearingResistanceD2(a_data[i]);
 
-        if (funct=='calc_D2') ec7.calc_D2(); 
+        if (funct=='q_ult') ec7.calc_D2(); 
         
-        if (funct=='calc_D2_nc') ec7.calc_D2_nc();
-        if (funct=='calc_D2_ic') ec7.calc_D2_ic();
-        if (funct=='calc_D2_sc') ec7.calc_D2_sc();
-        if (funct=='calc_D2_bc') ec7.calc_D2_bc();
-        if (funct=='calc_D2_qnc') ec7.calc_D2_qnc();
+        if (funct=='nc') ec7.calc_D2_nc();
+        if (funct=='ic') ec7.calc_D2_ic();
+        if (funct=='sc') ec7.calc_D2_sc();
+        if (funct=='bc') ec7.calc_D2_bc();
+        if (funct=='q_nc') ec7.calc_D2_qnc();
 
-        if (funct=='calc_D2_nq') ec7.calc_D2_nq();
-        if (funct=='calc_D2_iq') ec7.calc_D2_iq();
-        if (funct=='calc_D2_sq') ec7.calc_D2_sq();
-        if (funct=='calc_D2_bq') ec7.calc_D2_bq();
-        if (funct=='calc_D2_qnq') ec7.calc_D2_qnq();
+        if (funct=='nq') ec7.calc_D2_nq();
+        if (funct=='iq') ec7.calc_D2_iq();
+        if (funct=='sq') ec7.calc_D2_sq();
+        if (funct=='bq') ec7.calc_D2_bq();
+        if (funct=='q_nq') ec7.calc_D2_qnq();
         
-        if (funct=='calc_D2_ng') ec7.calc_D2_ng();
-        if (funct=='calc_D2_ig') ec7.calc_D2_ig();
-        if (funct=='calc_D2_sg') ec7.calc_D2_sg();
-        if (funct=='calc_D2_bg') ec7.calc_D2_bg();
-        if (funct=='calc_D2_qng') ec7.calc_D2_qng();
+        if (funct=='ng') ec7.calc_D2_ng();
+        if (funct=='ig') ec7.calc_D2_ig();
+        if (funct=='sg') ec7.calc_D2_sg();
+        if (funct=='bg') ec7.calc_D2_bg();
+        if (funct=='q_ng') ec7.calc_D2_qng();
         
-        ec7.report_results(); 
         a_res.push (ec7);
     } 
     
@@ -1427,7 +1512,7 @@ static calc_EC7_D2_data (data, funct = 'calc_D2') {
  * @param {string} [resp] - value
  * @returns {}
  */
-static calc_EC7_D2(breadth, length, area, cohesion, phi_rad, surcharge, density, hload, vload, htheta_rad, alpha_rad, resp = 'value' ) {
+static calc_EC7_D2(breadth, length, area, cohesion, phi_rad, surcharge, density, hload, vload, htheta_rad, alpha_rad, options ) {
 
         // Attribute calc_EC7_D2.VB_Description = "calculate design drained bearing resistance for EC7 Eq D2"
         // Attribute calc_EC7_D2.VB_ProcData.VB_Invoke_Func = " \n21"
@@ -1449,7 +1534,10 @@ static calc_EC7_D2(breadth, length, area, cohesion, phi_rad, surcharge, density,
         
         ec7.alpha_rad = alpha_rad
         
-        if (resp=='value') {
+        if ('latex' in options) {
+            ec7.latex = ec7._latex();
+        }
+        if ('value' in options) {
         return ec7.calc_D2();
         }
 

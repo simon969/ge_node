@@ -10,21 +10,35 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
       console.error(err.message)
       throw err
     } else {
-        console.log('Connected to the SQLite database.')
+        console.log('Connected to the SQLite database.');
+
         db.run(`CREATE TABLE ge_task (
                     Id TEXT PRIMARY KEY,
                     owner TEXT NOT NULL,
-                    createdDT_int INT NOT NULL,
+                    created INT NOT NULL,
                     folder TEXT NULL,
-                    files TEXT NULL,
+                    files TEXT NULL, 
+                    type TEXT NULL,
+                    expires INT NOT NULL,
+                    dataclass NULL,
                     options TEXT NULL);`,
+        (err) => {
+                if (err) {
+                    console.error(err.message)
+                } 
+        });
+        
+        db.run(`alter table ge_task add column description TEXT;`,
         (err) => {
             if (err) {
                console.error(err.message)
             } 
-        });  
+        });
     }
 });
 
 
 module.exports = db
+
+
+

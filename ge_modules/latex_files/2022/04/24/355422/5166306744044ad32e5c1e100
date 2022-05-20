@@ -1,0 +1,38 @@
+% Ec7_Undrained Bearing Resistance Table
+% template version 0.1, 2022-04-21
+% define variables as macro parameters 
+\newcommand{\length}{0}
+\newcommand{\breadth}{0}
+\newcommand{\area}{0}
+\newcommand{\cu}{0}
+\newcommand{\nc}{0}
+\newcommand{\sc}{0}
+\newcommand{\ic}{0}
+\newcommand{\bc}{0}
+\newcommand{\qnc}{0}
+\newcommand{\surcharge}{0}
+\newcommand{\qult}{0}
+
+\documentclass{article}
+\begin{document}
+	\begin{table}
+		\begin{center}
+			\caption{Undrained Bearing Resistance (BS EN 1997 Eq D1}
+			\label{tab:table1}
+			\begin{tabular}{l|c|r}
+				\textbf{Parameter} & \textbf{Value} & \textbf{Description} \\
+				length (m) & \length & Length of foundation \\
+				breadth (m) & \breadth & Breadth of foundation \\
+				area (m\textsuperscript{2}) & \area &  Effective bearing area \\
+				cohesion (kPa) & \cu & Undrained shear strength \\
+				N\textsubscript{c} & \nc & Bearing capacity factor \\
+				s\textsubscript{c} & \sc & Shape factor \\
+				i\textsubscript{c} & \ic & Load inclination factor \\
+				b\textsubscript{c} & \bc & Base inclination factor \\
+				q\textsubscript{nc} (kPa) & \qnc & Total undrained bearing resistance \\
+				surcharge (kPa) & 10 & Surcharge adjacent to foundation \\
+				qult (kPa) & 434.181175 & Total ultimate bearing resistance \\
+			\end{tabular}
+		\end{center}
+	\end{table}
+\end{document}
